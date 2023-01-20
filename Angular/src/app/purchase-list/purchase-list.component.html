@@ -1,0 +1,95 @@
+<div class="panel panel-default">
+  <div class="panel-heading">
+      <h1 style="text-align: center">Purchases</h1><br>
+      <div class="row" [hidden]="!deleteMessage">
+
+                <div class="col-sm-4"></div>
+                <div class="col-sm-4">
+                        <div class="alert alert-info alert-dismissible">
+                                <button type="button" class="close" data-dismiss="alert">&times;</button>
+                                <strong>Purchase Data Deleted</strong>
+                        </div>
+                </div>
+                <div class="col-sm-4"></div>
+        </div>
+    </div>
+
+
+  <div class="panel-body">
+      <table  class="table table-hover table-sm" datatable [dtOptions]="dtOptions"
+      [dtTrigger]="dtTrigger"  >
+          <thead class="thead-light">
+              <tr>
+                  <th>Purchase Name</th>
+                  <th>Purchase Email</th>
+                  <th>Purchase Branch</th>
+                  <th>Action</th>
+
+              </tr>
+          </thead>
+          <tbody>
+               <tr *ngFor="let purchase of purchases ">
+                  <td>{{purchase.purchase_name}}</td>
+                  <td>{{purchase.purchase_email}}</td>
+                  <td>{{purchase.purchase_branch}}</td>
+                  <td><button (click)="deletePurchase(purchase.purchase_id)" class='btn btn-primary'><i class="fa fa-futboll-0">Delete</i></button>&nbsp;
+                    <button (click)="updatePurchase(purchase.purchase_id)" class='btn btn-info'
+                    data-toggle="modal" data-target="#myModal">Update</button>
+                  </td>
+                </tr>
+          </tbody><br>
+      </table>
+  </div>
+</div>
+
+<div class="modal" id="myModal">
+        <div class="modal-dialog">
+          <div class="modal-content">
+                <form [formGroup]="purchaseupdateform" #updstu (ngSubmit)="updateStu(updstu)">
+            <!-- Modal Header -->
+            <div class="modal-header">
+              <h4 class="modal-title" style="text-align: center">Update Purchase</h4>
+
+            </div>
+
+            <!-- Modal body -->
+            <div class="modal-body" *ngFor="let purchase of purchaselist " >
+                <div [hidden]="isupdated">
+
+                    <input type="hidden" class="form-control"  formControlName="purchase_id" [(ngModel)]="purchase.purchase_id">
+                            <div class="form-group">
+                                <label for="name">Purchase Name</label>
+                                <input type="text" class="form-control"  formControlName="purchase_name" [(ngModel)]="purchase.purchase_name"  >
+                            </div>
+
+                            <div class="form-group">
+                                <label for="name">Purchase Email</label>
+                                <input type="text" class="form-control" formControlName="purchase_email" [(ngModel)]="purchase.purchase_email">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="name">Purchase Branch</label>
+                                  <select class="form-control" formControlName="purchase_branch" required>
+                                    <option value="B-Tech" [selected]="'B-Tech' == purchase.purchase_branch">Online</option>
+                                    <option value="BCA" [selected]="'BCA' == purchase.purchase_branch">York</option>
+                                    <option value="MCA" [selected]="'MCA' == purchase.purchase_branch" >Bos</option>
+                                    <option value="M-Tech" [selected]="'M-Tech' == purchase.purchase_branch">Tol</option>
+                                  </select>
+                            </div>
+                  </div>
+                  <div [hidden]="!isupdated">
+                      <h4>Purchase Detail Updated!</h4>
+                  </div>
+
+            </div>
+
+            <!-- Modal footer -->
+            <div class="modal-footer" >
+              <button type="submit" class="btn btn-success" [hidden]="isupdated">Update</button>
+              <button type="button" class="btn btn-danger" data-dismiss="modal" (click)="changeisUpdate()">Close</button>
+            </div>
+
+        </form>
+          </div>
+        </div>
+      </div>
